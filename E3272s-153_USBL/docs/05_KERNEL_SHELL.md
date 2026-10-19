@@ -75,8 +75,13 @@
 Т.е. при наличии `/yaffs0/ksscript.s` shell исполняет его на C‑интерпретаторе
 при старте; в чистой прошивке файла может не быть — отсюда штатное сообщение [гипотеза].
 
-Доступ к shell в burn‑режиме — через USB‑канал типа **SHELL** (DEVICE_FD_SHELL=3,
-docs/03 §5), т.е. без сети/физического UART.
+В этой сборке стандартные stdin/stdout/stderr VxWorks привязаны к serial channel 0
+(см. `usrSerialInit` в docs/01 и UART в docs/08). Статический USB‑профиль PID
+`0x1C05` содержит MODEM+DIAG+PCUI и не содержит `DEVICE_FD_SHELL`; наличие типа
+SHELL в таблице USB‑каналов само по себе не доказывает USB-доступ к интерактивному
+shell. В коде есть runtime/NV-ветвления, поэтому состав всех возможных профилей
+не установлен. См. исследовательское уточнение
+[`research/e3272-shell-access/analysis.md`](../../research/e3272-shell-access/analysis.md).
 
 ## 4. Каталог встроенных команд shell
 
